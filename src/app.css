@@ -238,6 +238,17 @@ h2 {
   font-size: 16px;
 }
 
+.footer {
+  padding-top: 20px;
+  border-top: 1.5px solid var(--page-line);
+  color: var(--page-ink-soft);
+  font-size: 16px;
+}
+
+.footer p {
+  margin: 0;
+}
+
 a {
   color: inherit;
   text-underline-offset: 3px;

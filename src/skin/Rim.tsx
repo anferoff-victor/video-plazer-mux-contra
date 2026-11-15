@@ -17,9 +17,9 @@ const SEEK_THROTTLE = 110;
 /** Tilt below this (≈4°) is treated as level, so a hand tremor never seeks. */
 const TILT_DEAD_ZONE = 0.07;
 /** Acceleration, in px/s², of an apple on a rim tipped fully on its side. */
-const TILT_GRAVITY = 2600;
+const TILT_GRAVITY = 1500;
 /** Rolling friction, per second. */
-const TILT_FRICTION = 2.4;
+const TILT_FRICTION = 2.8;
 const TILT_BOUNCE = 0.25;
 /** Below this speed (px/s) on a level dish the apple is considered at rest. */
 const TILT_REST = 8;

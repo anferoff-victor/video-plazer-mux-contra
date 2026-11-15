@@ -43,6 +43,7 @@ export interface SaucerSkinProps {
 export function SaucerSkin({ children, dish = 'khokhloma', apple = 'red', className, style }: SaucerSkinProps) {
   const sizer = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
+  const [bar, setBar] = useState<{ width: number; height: number } | undefined>(undefined);
   const tilt = useTilt();
 
   useLayoutEffect(() => {
@@ -55,15 +56,30 @@ export function SaucerSkin({ children, dish = 'khokhloma', apple = 'red', classN
         setSize((previous) => (previous?.width === width && previous.height === height ? previous : { width, height }));
       }
     };
+    // The control bar changes width as it sheds controls, so the dish seats it by its real size.
+    const barElement = element.parentElement?.querySelector<HTMLElement>('.saucer-bar');
+    const measureBar = () => {
+      if (!barElement) return;
+      const width = Math.round(barElement.offsetWidth);
+      const height = Math.round(barElement.offsetHeight);
+      if (width > 0 && height > 0) {
+        setBar((previous) => (previous?.width === width && previous.height === height ? previous : { width, height }));
+      }
+    };
     measure();
-    const observer = new ResizeObserver(measure);
+    measureBar();
+    const observer = new ResizeObserver(() => {
+      measure();
+      measureBar();
+    });
     observer.observe(element);
+    if (barElement) observer.observe(barElement);
     return () => observer.disconnect();
   }, []);
 
   const layout = useMemo(
-    () => (size ? computeLayout(size.width, size.height, DISH_SHAPE[dish]) : null),
-    [size, dish]
+    () => (size ? computeLayout(size.width, size.height, DISH_SHAPE[dish], bar) : null),
+    [size, dish, bar]
   );
 
   const vars = layout
@@ -71,6 +87,8 @@ export function SaucerSkin({ children, dish = 'khokhloma', apple = 'red', classN
         '--saucer-rim': `${layout.rim}px`,
         '--saucer-chord': `${Math.floor(layout.chord)}px`,
         '--saucer-bar-bottom': `${layout.barBottom.toFixed(1)}px`,
+        '--saucer-center-y': `${layout.centerY.toFixed(1)}px`,
+        '--saucer-center-max': `${layout.centerMax.toFixed(1)}px`,
         '--saucer-well': `path("${layout.inner.d}")`,
         '--saucer-outline': `path("${layout.outer.d}")`,
       } as CSSProperties)

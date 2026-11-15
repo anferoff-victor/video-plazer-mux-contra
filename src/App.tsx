@@ -119,6 +119,12 @@ export function App() {
           tales. Built with <a href="https://videojs.org">Video.js v10</a>. Apache-2.0.
         </p>
       </section>
+
+      <footer className="footer">
+        <p>
+          © 2026 Victor Anferov, <a href="https://parnii.de">parnii.de</a>, Berlin
+        </p>
+      </footer>
     </main>
   );
 }

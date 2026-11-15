@@ -348,7 +348,6 @@
   display: flex;
   align-items: center;
   gap: 2px;
-  max-width: calc(var(--saucer-chord, 80cqw) - 12px);
   padding: 3px 5px;
   border: 1.5px solid var(--saucer-ui-border);
   border-radius: 999px;
@@ -545,12 +544,12 @@
 /* The opening play button: a painted medallion in the middle of the well. */
 .saucer-center-play {
   position: absolute;
-  top: 46%;
+  top: var(--saucer-center-y, 46%);
   left: 50%;
   display: grid;
   place-items: center;
-  width: clamp(56px, 16cqw, 96px);
-  height: clamp(56px, 16cqw, 96px);
+  width: min(clamp(56px, 16cqw, 96px), var(--saucer-center-max, 96px));
+  height: min(clamp(56px, 16cqw, 96px), var(--saucer-center-max, 96px));
   padding: 0;
   border: 2px solid var(--saucer-ui-border);
   border-radius: 50%;
