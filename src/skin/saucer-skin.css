@@ -1,0 +1,894 @@
+/*
+ * Silver Saucer — a skin for the Video.js v10 player.
+ *
+ * Public custom properties (set them on the skin or any ancestor):
+ *   --media-accent-color    Highlight for the lit ornament, toggled buttons and slider fills.
+ *   --media-border-radius   Corner radius of menus, tooltips and dialogs.
+ *   --saucer-backdrop       Color behind the dish in fullscreen.
+ * A dish theme sets the --saucer-lacquer-*, --saucer-paint-*, --saucer-edge and --saucer-ui-* groups;
+ * an apple theme sets the --saucer-apple-* group.
+ */
+
+.saucer-skin {
+  --saucer-lacquer-light: #2a211b;
+  --saucer-lacquer: #14100d;
+  --saucer-lacquer-deep: #070504;
+  --saucer-paint-1: var(--media-accent-color, #f4b93a);
+  --saucer-paint-2: #dd2d1f;
+  --saucer-paint-3: #f4b93a;
+  --saucer-edge: #f4b93a;
+  --saucer-unlit: 0.4;
+
+  --saucer-ui-bg: #120e0b;
+  --saucer-ui-fg: #fff4d9;
+  --saucer-ui-muted: #d9c9a3;
+  --saucer-ui-border: #f4b93a;
+  --saucer-ui-accent: var(--media-accent-color, #f4b93a);
+  --saucer-ui-on-accent: #1a1206;
+  --saucer-ui-hover: rgb(255 244 217 / 0.16);
+  --saucer-focus: #fff;
+  --saucer-focus-halo: #0b0b0b;
+  --saucer-backdrop: #1b1410;
+  --saucer-radius: var(--media-border-radius, 14px);
+
+  --saucer-apple-light: #ff8a6b;
+  --saucer-apple-mid: #d81f1f;
+  --saucer-apple-dark: #7c0a12;
+  --saucer-apple-blush: #ffd36b;
+  --saucer-apple-stem: #5b3a1c;
+  --saucer-apple-leaf: #4f9a2f;
+
+  --saucer-button: 40px;
+  --saucer-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  container: saucer / inline-size;
+  isolation: isolate;
+  color: var(--saucer-ui-fg);
+  font-family: var(--media-font-family, 'Alegreya Sans', ui-sans-serif, system-ui, sans-serif);
+  font-size: 14px;
+  line-height: 1.2;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  outline: none;
+}
+
+.saucer-skin *,
+.saucer-skin *::before,
+.saucer-skin *::after {
+  box-sizing: border-box;
+}
+
+.saucer-skin:fullscreen {
+  aspect-ratio: auto;
+  width: 100%;
+  height: 100%;
+  background: var(--saucer-backdrop);
+}
+
+@media (pointer: coarse) {
+  .saucer-skin {
+    --saucer-button: 44px;
+  }
+}
+
+/* ---------- Dish themes ---------- */
+
+.saucer-skin[data-dish='gzhel'] {
+  --saucer-lacquer-light: #ffffff;
+  --saucer-lacquer: #f1f4fb;
+  --saucer-lacquer-deep: #cfd8ee;
+  --saucer-paint-1: var(--media-accent-color, #1d3fae);
+  --saucer-paint-2: #3f6fe0;
+  --saucer-paint-3: #1d3fae;
+  --saucer-edge: #1d3fae;
+  --saucer-unlit: 0.3;
+  --saucer-ui-bg: #fbfcff;
+  --saucer-ui-fg: #10246b;
+  --saucer-ui-muted: #3b4f93;
+  --saucer-ui-border: #1d3fae;
+  --saucer-ui-accent: var(--media-accent-color, #1d3fae);
+  --saucer-ui-on-accent: #fff;
+  --saucer-ui-hover: rgb(29 63 174 / 0.14);
+  --saucer-backdrop: #0d1a45;
+}
+
+.saucer-skin[data-dish='silver'] {
+  --saucer-lacquer-light: #f4f6f9;
+  --saucer-lacquer: #b9c0ca;
+  --saucer-lacquer-deep: #7d8693;
+  --saucer-paint-1: var(--media-accent-color, #fdfdfd);
+  --saucer-paint-2: #3d4654;
+  --saucer-paint-3: #fdfdfd;
+  --saucer-edge: #ffffff;
+  --saucer-unlit: 0.35;
+  --saucer-ui-bg: #1a1e25;
+  --saucer-ui-fg: #f2f5f9;
+  --saucer-ui-muted: #c3cad4;
+  --saucer-ui-border: #d5dbe3;
+  --saucer-ui-accent: var(--media-accent-color, #f2f5f9);
+  --saucer-ui-on-accent: #14171c;
+  --saucer-ui-hover: rgb(242 245 249 / 0.16);
+  --saucer-backdrop: #101318;
+}
+
+/* ---------- Apple themes ---------- */
+
+.saucer-skin[data-apple='golden'] {
+  --saucer-apple-light: #fff3a6;
+  --saucer-apple-mid: #f2c12e;
+  --saucer-apple-dark: #a86b08;
+  --saucer-apple-blush: #ff8a4a;
+}
+
+.saucer-skin[data-apple='green'] {
+  --saucer-apple-light: #e6f9a0;
+  --saucer-apple-mid: #7cc23a;
+  --saucer-apple-dark: #2f6b18;
+  --saucer-apple-blush: #f6e36b;
+}
+
+/* Spoken by screen readers, never shown. */
+.saucer-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Dish and well ---------- */
+
+.saucer-sizer,
+.saucer-shadow,
+.saucer-well,
+.saucer-rim,
+.saucer-controls,
+.saucer-buffering,
+.saucer-indicators {
+  position: absolute;
+  inset: 0;
+}
+
+.saucer-sizer {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* The shadow is its own static layer, so nothing has to be re-blurred while the apple moves. */
+.saucer-shadow {
+  pointer-events: none;
+  filter: blur(calc(var(--saucer-rim, 30px) * 0.3));
+  opacity: 0.4;
+  translate: 0 calc(var(--saucer-rim, 30px) * 0.22);
+  z-index: 0;
+}
+
+.saucer-shadow i {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  clip-path: var(--saucer-outline);
+}
+
+.saucer-skin:fullscreen .saucer-shadow {
+  display: none;
+}
+
+.saucer-well {
+  z-index: 1;
+  background: #000;
+  clip-path: var(--saucer-well);
+}
+
+.saucer-well video,
+.saucer-well iframe,
+.saucer-poster,
+.saucer-poster-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+}
+
+.saucer-poster {
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.saucer-poster:not([data-visible]) {
+  opacity: 0;
+}
+
+.saucer-rim {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.saucer-dish,
+.saucer-rim-hit {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: visible;
+}
+
+.saucer-ornament-unlit,
+.saucer-beads-unlit {
+  opacity: var(--saucer-unlit);
+}
+
+.saucer-beads-idle {
+  opacity: 0.45;
+}
+
+.saucer-buffer {
+  opacity: 0.9;
+}
+
+.saucer-rim-hit path {
+  pointer-events: stroke;
+  cursor: pointer;
+  touch-action: none;
+}
+
+/* ---------- Apple (the seek thumb) ---------- */
+
+.saucer-apple {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--saucer-apple-size);
+  height: var(--saucer-apple-size);
+  border-radius: 50%;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  outline: none;
+  will-change: transform;
+}
+
+/* Keep the touch target at 44px even when the apple itself is smaller. */
+.saucer-apple::before {
+  content: '';
+  position: absolute;
+  inset: min(0px, calc((var(--saucer-apple-size) - 44px) / 2));
+  border-radius: 50%;
+}
+
+.saucer-apple[aria-disabled='true'] {
+  cursor: default;
+}
+
+.saucer-rim[data-dragging] .saucer-apple {
+  cursor: grabbing;
+}
+
+.saucer-apple-art {
+  position: absolute;
+  inset: 0;
+  transition: scale 0.25s var(--saucer-ease);
+}
+
+.saucer-apple:hover .saucer-apple-art,
+.saucer-apple:focus-visible .saucer-apple-art,
+.saucer-rim[data-dragging] .saucer-apple-art,
+.saucer-apple[data-tilting] .saucer-apple-art {
+  scale: 1.14;
+}
+
+.saucer-apple-body,
+.saucer-apple-gloss {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.saucer-apple-body {
+  rotate: var(--saucer-apple-roll, 0deg);
+}
+
+.saucer-apple-shadow {
+  position: absolute;
+  inset: 22% 2% -14% 2%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0));
+}
+
+.saucer-apple:focus-visible {
+  outline: 3px solid var(--saucer-focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 9px var(--saucer-focus-halo);
+}
+
+.saucer-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 4px 9px;
+  border: 1.5px solid var(--saucer-ui-border);
+  border-radius: 999px;
+  background: var(--saucer-ui-bg);
+  color: var(--saucer-ui-fg);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.saucer-preview[data-visible] {
+  opacity: 1;
+}
+
+/* ---------- Controls ---------- */
+
+.saucer-controls {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.saucer-bar {
+  position: absolute;
+  bottom: var(--saucer-bar-bottom, 12%);
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  max-width: calc(var(--saucer-chord, 80cqw) - 12px);
+  padding: 3px 5px;
+  border: 1.5px solid var(--saucer-ui-border);
+  border-radius: 999px;
+  background: var(--saucer-ui-bg);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.35);
+  pointer-events: auto;
+  translate: -50% 0;
+  transition:
+    opacity 0.25s,
+    translate 0.35s var(--saucer-ease);
+}
+
+/* Hide with the viewer's idle state, but never while something inside has keyboard focus. */
+.saucer-controls:not([data-visible]):not(:has(:focus-visible)) .saucer-bar {
+  opacity: 0;
+  translate: -50% 10px;
+  pointer-events: none;
+}
+
+.saucer-bar-spacer {
+  flex: 1 1 6px;
+  min-width: 6px;
+}
+
+.saucer-button {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--saucer-button);
+  height: var(--saucer-button);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    scale 0.2s var(--saucer-ease);
+}
+
+.saucer-button:hover {
+  background: var(--saucer-ui-hover);
+}
+
+.saucer-button:active {
+  scale: 0.92;
+}
+
+.saucer-button[data-hidden],
+.saucer-button[data-availability='unsupported'] {
+  display: none;
+}
+
+.saucer-button[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.saucer-skin :is(.saucer-button, .saucer-center-play, .saucer-volume-thumb, .saucer-menu-item, .saucer-dialog-close):focus-visible {
+  outline: 3px solid var(--saucer-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 7px var(--saucer-focus-halo);
+}
+
+.saucer-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  grid-area: 1 / 1;
+}
+
+/* One icon per state. */
+.saucer-icon-play,
+.saucer-icon-pause,
+.saucer-icon-restart,
+.saucer-icon-volume-off,
+.saucer-icon-volume-low,
+.saucer-icon-volume-high,
+.saucer-icon-captions-on,
+.saucer-icon-pip-exit,
+.saucer-icon-fullscreen-exit {
+  display: none;
+}
+
+[data-paused]:not([data-ended]) > .saucer-icon-play,
+:not([data-paused]):not([data-ended]) > .saucer-icon-pause,
+[data-ended] > .saucer-icon-restart,
+[data-volume-level='off'] > .saucer-icon-volume-off,
+[data-volume-level='low'] > .saucer-icon-volume-low,
+[data-volume-level='medium'] > .saucer-icon-volume-high,
+[data-volume-level='high'] > .saucer-icon-volume-high,
+[data-active] > .saucer-icon-captions-on,
+[data-pip] > .saucer-icon-pip-exit,
+[data-fullscreen] > .saucer-icon-fullscreen-exit {
+  display: block;
+}
+
+[data-active] > .saucer-icon-captions-off,
+[data-pip] > .saucer-icon-pip-enter,
+[data-fullscreen] > .saucer-icon-fullscreen-enter {
+  display: none;
+}
+
+.saucer-play-button,
+.saucer-tilt-button[data-on] {
+  background: var(--saucer-ui-accent);
+  color: var(--saucer-ui-on-accent);
+}
+
+.saucer-play-button:hover,
+.saucer-tilt-button[data-on]:hover {
+  background: color-mix(in srgb, var(--saucer-ui-accent) 86%, #fff);
+}
+
+.saucer-rate-button {
+  width: auto;
+  min-width: var(--saucer-button);
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.saucer-volume {
+  display: flex;
+  align-items: center;
+}
+
+.saucer-volume-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 64px;
+  height: var(--saucer-button);
+  margin-inline: 2px 8px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.saucer-volume-slider[data-availability='unsupported'],
+.saucer-volume-slider[data-hidden] {
+  display: none;
+}
+
+.saucer-volume-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--saucer-ui-fg) 30%, transparent);
+}
+
+.saucer-volume-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--media-slider-fill);
+  border-radius: inherit;
+  background: var(--saucer-ui-accent);
+}
+
+.saucer-volume-thumb {
+  position: absolute;
+  left: var(--media-slider-fill);
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--saucer-ui-bg);
+  border-radius: 50%;
+  background: var(--saucer-ui-fg);
+  translate: -50% 0;
+}
+
+.saucer-time {
+  display: flex;
+  flex: none;
+  align-items: baseline;
+  gap: 4px;
+  padding-inline: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.saucer-time-separator,
+.saucer-time-duration {
+  color: var(--saucer-ui-muted);
+}
+
+/* The opening play button: a painted medallion in the middle of the well. */
+.saucer-center-play {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 16cqw, 96px);
+  height: clamp(56px, 16cqw, 96px);
+  padding: 0;
+  border: 2px solid var(--saucer-ui-border);
+  border-radius: 50%;
+  background: var(--saucer-ui-bg);
+  color: var(--saucer-ui-accent);
+  box-shadow:
+    0 0 0 5px var(--saucer-ui-bg),
+    0 0 0 6.5px var(--saucer-ui-border),
+    0 10px 30px rgb(0 0 0 / 0.45);
+  cursor: pointer;
+  pointer-events: auto;
+  translate: -50% -50%;
+  transition:
+    scale 0.25s var(--saucer-ease),
+    opacity 0.2s;
+}
+
+.saucer-center-play .saucer-icon {
+  width: 44%;
+  height: 44%;
+}
+
+.saucer-center-play:hover {
+  scale: 1.06;
+}
+
+.saucer-center-play[data-started]:not([data-ended]) {
+  display: none;
+}
+
+/* ---------- Popups: tooltips and menus ---------- */
+
+.saucer-popup {
+  margin: 0;
+  border: 1.5px solid var(--saucer-ui-border);
+  background: var(--saucer-ui-bg);
+  color: var(--saucer-ui-fg);
+  font-family: var(--media-font-family, 'Alegreya Sans', ui-sans-serif, system-ui, sans-serif);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  transition:
+    opacity 0.15s,
+    scale 0.2s var(--saucer-ease);
+}
+
+.saucer-popup[data-side='top'] {
+  transform-origin: bottom center;
+}
+
+.saucer-popup[data-starting-style],
+.saucer-popup[data-ending-style] {
+  opacity: 0;
+  scale: 0.94;
+}
+
+.saucer-tooltip {
+  --media-tooltip-side-offset: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.saucer-tooltip-shortcut {
+  margin-inline-start: 6px;
+  color: var(--saucer-ui-muted);
+  font-weight: 500;
+}
+
+.saucer-menu {
+  --media-popover-side-offset: 12px;
+  min-width: 132px;
+  padding: 0;
+  border-radius: var(--saucer-radius);
+  overflow: hidden;
+}
+
+.saucer-menu-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  outline: none;
+}
+
+.saucer-menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.saucer-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 36px;
+  padding: 0 10px;
+  border-radius: calc(var(--saucer-radius) - 6px);
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  outline: none;
+}
+
+.saucer-menu-item[data-highlighted] {
+  background: var(--saucer-ui-hover);
+}
+
+.saucer-menu-item[aria-checked='true'] {
+  color: var(--saucer-ui-accent);
+}
+
+.saucer-menu-indicator {
+  display: grid;
+  visibility: hidden;
+}
+
+.saucer-menu-item[aria-checked='true'] .saucer-menu-indicator {
+  visibility: visible;
+}
+
+.saucer-menu-indicator .saucer-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------- Feedback ---------- */
+
+.saucer-buffering {
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.saucer-buffering[data-visible] {
+  opacity: 1;
+}
+
+.saucer-buffering-dots {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--saucer-ui-border);
+  border-radius: 999px;
+  background: var(--saucer-ui-bg);
+}
+
+.saucer-buffering-dots i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--saucer-ui-accent);
+  animation: saucer-bounce 0.9s ease-in-out infinite alternate;
+}
+
+.saucer-buffering-dots i:nth-child(2) {
+  background: var(--saucer-paint-2);
+  animation-delay: 0.15s;
+}
+
+.saucer-buffering-dots i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes saucer-bounce {
+  from {
+    translate: 0 4px;
+    opacity: 0.5;
+  }
+  to {
+    translate: 0 -4px;
+    opacity: 1;
+  }
+}
+
+.saucer-indicators {
+  z-index: 2;
+  display: grid;
+  place-items: start center;
+  padding-top: calc(var(--saucer-rim, 30px) * 1.7 + 6px);
+  pointer-events: none;
+}
+
+.saucer-indicator {
+  grid-area: 1 / 1;
+  padding: 6px 14px;
+  border: 1.5px solid var(--saucer-ui-border);
+  border-radius: 999px;
+  background: var(--saucer-ui-bg);
+  color: var(--saucer-ui-fg);
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  transition: opacity 0.2s;
+}
+
+.saucer-indicator:not([data-open]),
+.saucer-indicator[data-starting-style],
+.saucer-indicator[data-ending-style] {
+  opacity: 0;
+}
+
+.saucer-indicator-fill {
+  display: block;
+}
+
+/* ---------- Error dialog ---------- */
+
+.saucer-dialog-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: rgb(0 0 0 / 0.6);
+  clip-path: var(--saucer-well);
+}
+
+.saucer-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  width: min(320px, calc(var(--saucer-chord, 80cqw) - 24px));
+  margin: 0;
+  padding: 18px 20px;
+  border: 1.5px solid var(--saucer-ui-border);
+  border-radius: var(--saucer-radius);
+  background: var(--saucer-ui-bg);
+  color: var(--saucer-ui-fg);
+  text-align: center;
+  translate: -50% -50%;
+}
+
+.saucer-dialog:not([data-open]),
+.saucer-dialog-backdrop:not([data-open]) {
+  display: none;
+}
+
+.saucer-dialog-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.saucer-dialog-description {
+  margin: 0;
+  color: var(--saucer-ui-muted);
+  font-size: 14px;
+}
+
+.saucer-dialog-close {
+  min-height: 40px;
+  margin-top: 6px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--saucer-ui-accent);
+  color: var(--saucer-ui-on-accent);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* ---------- Smaller players ---------- */
+
+@container saucer (max-width: 640px) {
+  .saucer-volume-slider,
+  .saucer-pip-button {
+    display: none;
+  }
+}
+
+@container saucer (max-width: 500px) {
+  .saucer-time-separator,
+  .saucer-time-duration,
+  .saucer-captions-button,
+  .saucer-rate-button {
+    display: none;
+  }
+
+  .saucer-bar {
+    gap: 0;
+  }
+}
+
+/* ---------- Preferences ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .saucer-skin *,
+  .saucer-skin *::before,
+  .saucer-skin *::after {
+    transition-duration: 0.01ms !important;
+    animation: none !important;
+  }
+
+  .saucer-apple-art {
+    scale: 1 !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .saucer-skin {
+    --saucer-unlit: 0.25;
+  }
+
+  .saucer-bar,
+  .saucer-popup {
+    border-width: 2.5px;
+  }
+}
+
+@media (forced-colors: active) {
+  .saucer-bar,
+  .saucer-popup,
+  .saucer-center-play,
+  .saucer-dialog {
+    border: 2px solid CanvasText;
+  }
+
+  .saucer-play-button,
+  .saucer-tilt-button[data-on] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  .saucer-volume-track {
+    border: 1px solid CanvasText;
+  }
+
+  .saucer-volume-fill {
+    background: Highlight;
+  }
+}
