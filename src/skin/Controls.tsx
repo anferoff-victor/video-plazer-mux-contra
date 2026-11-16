@@ -27,7 +27,7 @@ import {
   VolumeLowIcon,
   VolumeOffIcon,
 } from '@videojs/react/icons';
-import type { ReactElement, ReactNode } from 'react';
+import { useEffect, useState, type ReactElement, type ReactNode } from 'react';
 
 import type { Tilt } from './useTilt';
 
@@ -63,30 +63,53 @@ function TiltIcon() {
   );
 }
 
+const DENIED_HINT = 'Motion access is off for this site. Close Safari completely, reopen this page and tap Allow.';
+
 function TiltButton({ tilt }: { tilt: Tilt }) {
+  const [hint, setHint] = useState(false);
+  const denied = tilt.status === 'denied';
+
+  // The hint stays up for a few seconds after a refused request, long enough to read on a phone.
+  useEffect(() => {
+    if (!hint) return;
+    const timer = window.setTimeout(() => setHint(false), 6000);
+    return () => window.clearTimeout(timer);
+  }, [hint]);
+
   if (tilt.status === 'unsupported') return null;
   const on = tilt.status === 'on';
-  const denied = tilt.status === 'denied';
-  const label = denied ? 'Motion access was denied' : on ? 'Stop tilt to seek' : 'Tilt to seek';
+  const label = denied ? 'Motion access is off' : on ? 'Stop tilt to seek' : 'Tilt to seek';
 
   return (
-    <Tip label={label}>
-      <button
-        type="button"
-        className="saucer-button saucer-tilt-button"
-        aria-label="Tilt to seek"
-        aria-pressed={on}
-        aria-disabled={denied || undefined}
-        data-on={on ? '' : undefined}
-        onClick={() => {
-          if (denied) return;
-          if (on) tilt.disable();
-          else void tilt.enable();
-        }}
-      >
-        <TiltIcon />
-      </button>
-    </Tip>
+    <>
+      <Tip label={label}>
+        <button
+          type="button"
+          className="saucer-button saucer-tilt-button"
+          aria-label="Tilt to seek"
+          aria-pressed={on}
+          aria-describedby={hint ? 'saucer-tilt-hint' : undefined}
+          data-on={on ? '' : undefined}
+          data-denied={denied ? '' : undefined}
+          onClick={async () => {
+            if (on) {
+              tilt.disable();
+              return;
+            }
+            // Ask again every time: the browser may have been reset since it last said no.
+            const granted = await tilt.enable();
+            setHint(!granted);
+          }}
+        >
+          <TiltIcon />
+        </button>
+      </Tip>
+      {hint && (
+        <p id="saucer-tilt-hint" className="saucer-tilt-hint" role="status">
+          {DENIED_HINT}
+        </p>
+      )}
+    </>
   );
 }
 

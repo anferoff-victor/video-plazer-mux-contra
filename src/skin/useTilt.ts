@@ -9,7 +9,8 @@ export interface Tilt {
    * `x` grows as the right edge of the screen drops, `y` as the bottom edge drops. Roughly −1 to 1.
    */
   gravity: { current: { x: number; y: number } };
-  enable: () => Promise<void>;
+  /** Resolves to whether motion access was granted. */
+  enable: () => Promise<boolean>;
   disable: () => void;
   /** Take the current pose as "level". */
   recenter: () => void;
@@ -89,7 +90,7 @@ export function useTilt(): Tilt {
   const enable = useCallback(async () => {
     if (!isSupported()) {
       setStatus('unsupported');
-      return;
+      return false;
     }
     const request = (DeviceOrientationEvent as unknown as PermissionCapable).requestPermission;
     if (typeof request === 'function') {
@@ -97,15 +98,16 @@ export function useTilt(): Tilt {
         const result = await request.call(DeviceOrientationEvent);
         if (result !== 'granted') {
           setStatus('denied');
-          return;
+          return false;
         }
       } catch {
         setStatus('denied');
-        return;
+        return false;
       }
     }
     base.current = null;
     setStatus('on');
+    return true;
   }, []);
 
   const disable = useCallback(() => {
