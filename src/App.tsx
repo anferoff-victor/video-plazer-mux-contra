@@ -54,7 +54,33 @@ function Choice<T extends string>({
   );
 }
 
+const params = new URLSearchParams(window.location.search);
+const pick = <T extends string>(options: { value: T }[], value: string | null, fallback: T): T =>
+  options.find((option) => option.value === value)?.value ?? fallback;
+
+/**
+ * `?embed` shows the player alone, for an iframe on another site.
+ * Optional: `&dish=khokhloma|gzhel|silver`, `&apple=red|golden|green`.
+ */
+function Embed() {
+  return (
+    <main className="embed">
+      <h1 className="visually-hidden">Silver Saucer video player</h1>
+      <SaucerPlayer
+        playbackId={MUX_PLAYBACK_ID}
+        src={VIDEO_SRC}
+        dish={pick(DISHES, params.get('dish'), 'khokhloma')}
+        apple={pick(APPLES, params.get('apple'), 'red')}
+      />
+    </main>
+  );
+}
+
 export function App() {
+  return params.has('embed') ? <Embed /> : <Page />;
+}
+
+function Page() {
   const [dish, setDish] = useState<DishTheme>('khokhloma');
   const [apple, setApple] = useState<AppleTheme>('red');
 

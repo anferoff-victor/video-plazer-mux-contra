@@ -266,3 +266,36 @@ a:focus-visible {
     transition: none;
   }
 }
+
+/* ---------- Embed: the player alone, for an iframe ---------- */
+
+html:has(.embed),
+body:has(.embed) {
+  height: 100%;
+  background: transparent;
+}
+
+.embed {
+  position: fixed;
+  /* Room for the apple that overhangs the rim and for the dish's shadow. */
+  inset: 6px 18px 26px;
+}
+
+/* Fill the frame whatever its shape: the dish redraws itself to fit. */
+.embed .saucer-skin:not(:fullscreen) {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
